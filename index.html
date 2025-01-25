@@ -1,0 +1,165 @@
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduConnect - Plataforma Educacional Inteligente</title>
+    <link rel="stylesheet" href="/styles/global.css">
+    <script type="module" src="/js/app.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <nav>
+                <div class="logo">
+                    <h1>EduConnect</h1>
+                </div>
+                <div id="nav-menu">
+                    <a href="#home">Início</a>
+                    <a href="#login">Login</a>
+                    <a href="#cadastro">Cadastro</a>
+                    <a href="#games">Jogos</a>
+                    <a href="#study-videos">Vídeos de Estudo</a>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <section id="home">
+                <h2>Plataforma Educacional com IA</h2>
+                <p>Conectando estudantes, professores e fornecedores de conteúdo</p>
+            </section>
+
+            <section id="login-section">
+                <div class="login-container">
+                    <form id="login-form">
+                        <h3>Login</h3>
+                        <select id="user-type">
+                            <option value="student">Aluno</option>
+                            <option value="teacher">Professor</option>
+                            <option value="admin">Administrador</option>
+                            <option value="supplier">Fornecedor</option>
+                        </select>
+                        <input type="email" placeholder="E-mail" required>
+                        <input type="password" placeholder="Senha" required>
+                        <button type="submit">Entrar</button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="cadastro-section">
+                <div class="cadastro-container">
+                    <form id="cadastro-form">
+                        <h3>Cadastro</h3>
+                        <select id="new-user-type">
+                            <option value="student">Aluno</option>
+                            <option value="teacher">Professor</option>
+                            <option value="admin">Administrador</option>
+                            <option value="supplier">Fornecedor</option>
+                        </select>
+                        <input type="text" placeholder="Nome Completo" required>
+                        <input type="email" placeholder="E-mail" required>
+                        <input type="password" placeholder="Senha" required>
+                        <input type="password" placeholder="Confirmar Senha" required>
+                        <button type="submit">Cadastrar</button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="games-section">
+                <h2>Jogos Educacionais</h2>
+                <select id="game-selector">
+                    <option value="">Selecione um Jogo</option>
+                    <option value="math-quiz">Quiz Matemático</option>
+                    <option value="chess">Xadrez</option>
+                    <option value="memory">Jogo da Memória</option>
+                </select>
+                <div id="game-container"></div>
+            </section>
+
+            <section id="study-videos-section">
+                <h2>Vídeos de Estudo</h2>
+                <div class="video-categories">
+                    <button class="category-btn active" data-category="all">Todos</button>
+                    <button class="category-btn" data-category="math">Matemática</button>
+                    <button class="category-btn" data-category="science">Ciências</button>
+                    <button class="category-btn" data-category="language">Línguas</button>
+                </div>
+                <div id="video-container" class="video-grid">
+                    <!-- Videos will be dynamically populated -->
+                </div>
+                <div class="video-upload-section">
+                    <h3>Adicionar Novo Vídeo</h3>
+                    <form id="video-upload-form">
+                        <input type="text" id="video-title" placeholder="Título do Vídeo" required>
+                        <input type="url" id="video-link" placeholder="Link do Vídeo (YouTube)" required>
+                        <select id="video-category" required>
+                            <option value="">Selecione uma Categoria</option>
+                            <option value="math">Matemática</option>
+                            <option value="science">Ciências</option>
+                            <option value="language">Línguas</option>
+                        </select>
+                        <button type="submit">Adicionar Vídeo</button>
+                    </form>
+                </div>
+            </section>
+
+            <section id="library-section">
+                <h2>Biblioteca Virtual</h2>
+                <div class="library-controls">
+                    <select id="library-category">
+                        <option value="all">Todas as Categorias</option>
+                        <option value="dark-romance">Dark Romance</option>
+                        <option value="estudos">Estudos</option>
+                        <option value="romance">Romance</option>
+                    </select>
+                    <input type="text" id="library-search" placeholder="Buscar livros...">
+                </div>
+                <div id="library-container" class="book-grid">
+                    <!-- Books will be dynamically populated -->
+                </div>
+            </section>
+
+            <section id="student-wallet-section" class="hidden">
+                <h2>Carteira do Estudante</h2>
+                <div class="wallet-container">
+                    <div class="wallet-info">
+                        <h3>Informações Pessoais</h3>
+                        <div id="student-personal-info">
+                            <p>Nome: <span id="wallet-name"></span></p>
+                            <p>RA: <span id="wallet-ra"></span></p>
+                            <p>Curso: <span id="wallet-course"></span></p>
+                        </div>
+                    </div>
+                    <div class="wallet-academic">
+                        <h3>Informações Acadêmicas</h3>
+                        <div id="student-academic-info">
+                            <p>Semestre: <span id="wallet-semester"></span></p>
+                            <p>Média Geral: <span id="wallet-gpa"></span></p>
+                        </div>
+                    </div>
+                    <div class="wallet-actions">
+                        <h3>Ações</h3>
+                        <button id="edit-profile-btn">Editar Perfil</button>
+                        <button id="update-academic-info-btn">Atualizar Informações</button>
+                    </div>
+                    <div class="wallet-edit-form hidden">
+                        <h3>Editar Perfil</h3>
+                        <form id="wallet-edit-form">
+                            <input type="text" id="edit-name" placeholder="Nome Completo">
+                            <input type="text" id="edit-course" placeholder="Curso">
+                            <input type="number" id="edit-semester" placeholder="Semestre">
+                            <button type="submit">Salvar Alterações</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p> 2024 EduConnect - Todos os direitos reservados</p>
+        </footer>
+    </div>
+</body>
+</html>
